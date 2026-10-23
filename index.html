@@ -1,50 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZYNXO - WinZO Style</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zynxo</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
-body{background:#0f0a2e;color:white;min-height:100vh}
-.login{padding:20px;display:flex;flex-direction:column;justify-content:center;min-height:100vh}
-.logo{text-align:center;margin-bottom:30px}
-.logo h1{font-size:50px;color:#ffe600;font-weight:900}
-.card{background:#1e1555;border-radius:20px;padding:25px;border:2px solid #3a2a8a}
-.input{width:100%;padding:16px;border-radius:12px;border:1px solid #3a2a8a;background:#0f0a2e;color:white;font-size:16px;margin-bottom:15px}
-.btn{background:#ffe600;color:black;border:none;padding:18px;width:100%;border-radius:15px;font-weight:900;font-size:18px}
-.main{display:none}
-.header{background:#1a124d;padding:15px;display:flex;justify-content:space-between;border-bottom:3px solid #ffe600}
-.balance{background:#ffe600;color:black;padding:10px 18px;border-radius:25px;font-weight:900}
-.hero{background:linear-gradient(135deg,#2a1a6e,#1a124d);margin:15px;border-radius:20px;padding:30px;text-align:center;border:2px solid #ffe600}
-.hero h1{font-size:48px;color:#ffe600}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:15px}
-.card2{background:#1e1555;border-radius:16px;padding:20px;text-align:center;border:1px solid #3a2a8a}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#1a124d;display:flex;justify-content:space-around;padding:14px;border-top:2px solid #ffe600}
+body{background:#000;color:#fff;font-family:Arial;margin:0;padding:0}
+.input{width:90%;padding:12px;margin:10px 5%;border-radius:8px;border:1px solid #333;background:#111;color:#fff;font-size:14px}
+.btn{width:90%;padding:14px;margin:10px 5%;border-radius:10px;border:none;background:#00ff88;color:#000;font-weight:bold;font-size:16px}
+.card{background:#111;border:1px solid #222;margin:10px;border-radius:12px;padding:15px}
+.bal{font-size:28px;color:#00ff88;text-align:center;margin:15px}
 </style>
 </head>
 <body>
-<div class="login" id="login">
-<div class="logo"><h1>⚡ ZYNXO</h1><p>PLAY & EARN</p></div>
-<div class="card"><h2>Welcome! 👋</h2><p style="opacity:0.6;font-size:13px;margin:10px 0 20px">Signup & Get 31 Coins Direct</p>
-<input id="name" class="input" placeholder="Enter Your Name"><input id="mobile" class="input" placeholder="Enter Mobile Number">
-<button class="btn" onclick="go()">SIGNUP & GET 31 COINS →</button></div>
+
+<div class="bal">Balance: ₹<span id="balAmt">5</span></div>
+
+<!-- DEPOSIT SECTION -->
+<div class="card">
+<h3>💰 DEPOSIT - No Tax</h3>
+<input id="depAmt" class="input" type="number" placeholder="Amount Min ₹101 Max ₹50000" oninput="calcDeposit()">
+<p id="depInfo" style="font-size:12px;color:#00ff88;margin:8px;padding:8px;background:#0a2a0a;border-radius:8px;border:1px dashed #00ff88">Min ₹101 Max ₹50,000 | No Tax | 24 Hours</p>
+<button class="btn" onclick="doDeposit()">DEPOSIT NOW →</button>
 </div>
-<div class="main" id="main">
-<div class="header"><div style="font-weight:900;color:#ffe600">⚡ ZYNXO</div><div class="balance">🪙 <span id="coins">31</span> COINS</div></div>
-<div class="hero"><div style="font-size:60px">✅</div><h2 id="w">WELCOME!</h2><h1>31 COINS ADDED</h1><p>Direct to Wallet</p></div>
-<div class="grid">
-<div class="card2" onclick="spin()"><div style="font-size:38px">🎡</div><h3>Spin & Win</h3></div>
-<div class="card2"><div style="font-size:38px">🎮</div><h3>Play Games</h3></div>
-<div class="card2"><div style="font-size:38px">✅</div><h3>Tasks</h3></div>
-<div class="card2"><div style="font-size:38px">👥</div><h3>Refer</h3></div>
+
+<!-- WITHDRAW SECTION -->
+<div class="card">
+<h3>💸 WITHDRAW - 10AM to 10PM</h3>
+<input id="withAmt" class="input" type="number" placeholder="Amount Min ₹101 Max ₹5001" oninput="calcTax()">
+<p id="taxInfo" style="font-size:12px;color:#00ff88;margin:8px;padding:8px;background:#0a2a0a;border-radius:8px;border:1px dashed #00ff88">Min ₹101 Max ₹5001 | Daily ₹15000 | Time 10AM-10PM | Tax 5%+₹5</p>
+<input id="upiId" class="input" placeholder="UPI ID Ex: 98765@ybl">
+<button class="btn" onclick="doWithdraw()">WITHDRAW NOW →</button>
+<p style="font-size:10px;opacity:0.6;text-align:center;margin-top:10px">⏰ 10AM-10PM | Min ₹101 Max ₹5001 | Daily ₹15000 | Tax 5%+₹5</p>
 </div>
-<div class="nav"><div>🏠 Home</div><div>🎮 Games</div><div>🎡 Spin</div><div>💰 Wallet</div></div>
-</div>
+
 <script>
-let coins=31;
-function go(){let n=document.getElementById('name').value,m=document.getElementById('mobile').value;if(n.length<2){alert('Enter Name');return}if(m.length<10){alert('Enter Mobile');return}document.getElementById('login').style.display='none';document.getElementById('main').style.display='block';document.getElementById('w').innerText='WELCOME '+n.toUpperCase()+'!'}
-function spin(){let w=Math.floor(Math.random()*100)+20;coins+=w;document.getElementById('coins').innerText=coins;alert('Won '+w+' Coins! Total: '+coins)}
+// LOAD BALANCE
+let u = JSON.parse(localStorage.getItem('zynxo_user')||'{"rs":5}');
+document.getElementById('balAmt').innerText = u.rs;
+function updateBal(user){document.getElementById('balAmt').innerText=user.rs}
+
+// MODAL
+function showModal(icon,title,msg){alert(title+"\n\n"+msg)}
+function showP(p){console.log(p)}
+
+// DEPOSIT - 101 to 50000 NO TAX
+function doDeposit(){
+let amt=parseInt(document.getElementById('depAmt').value);
+if(!amt || amt<101){alert('Min Deposit ₹101 beku!');return}
+if(amt>50000){alert('Max Deposit ₹50,000 matra!');return}
+let user=JSON.parse(localStorage.getItem('zynxo_user')||'{"rs":5}');
+user.rs+=amt;
+localStorage.setItem('zynxo_user',JSON.stringify(user));
+updateBal(user);
+alert(`✅ Deposit Success!\nAmount: ₹${amt}\nNo Tax!\nNew Balance: ₹${user.rs}`);
+document.getElementById('depAmt').value='';
+calcDeposit();
+}
+function calcDeposit(){
+let amt=parseInt(document.getElementById('depAmt').value)||0;
+let info=document.getElementById('depInfo');
+if(amt>=101 && amt<=50000){
+info.innerHTML=`✅ You Will Get: ₹${amt} (No Tax)<br><small>Min ₹101 | Max ₹50,000</small>`;
+}else if(amt>0){
+info.innerHTML=`❌ Min ₹101 Max ₹50,000 beku! Entered ₹${amt}`;
+}else{
+info.innerHTML=`Min ₹101 Max ₹50,000 | No Tax | 24 Hours`;
+}
+}
+
+// WITHDRAW - 10AM-10PM, DAILY 15000, MIN 101 MAX 5001, TAX 5%+5
+function doWithdraw(){
+let amt=parseInt(document.getElementById('withAmt').value);
+let upi=document.getElementById('upiId').value.trim();
+
+// TIME CHECK
+let now=new Date();
+let h=now.getHours();
+if(h<10 || h>=22){
+alert(`❌ Withdraw Closed!\n⏰ Time: 10:00 AM to 10:00 PM\nNow: ${now.toLocaleTimeString()}\n10 AM mele try madi!`);
+return;
+}
+if(!amt || amt<101){alert('Min Withdraw ₹101 beku!');return}
+if(amt>5001){alert(`Max Per Transaction ₹5001 matra!\nYou entered: ₹${amt}\nDaily ₹15000 - 3 times madi`);return}
+if(!upi.includes('@')){alert('Correct UPI ID haki! Ex: 98765@ybl');return}
+
+// DAILY LIMIT 15000
+let today=new Date().toDateString();
+let wd=JSON.parse(localStorage.getItem('zynxo_withdraw_daily')||'{"date":"","total":0}');
+if(wd.date!==today) wd={date:today,total:0};
+let remain=15000-wd.total;
+if(amt>remain){
+alert(`❌ Daily Limit Over!\nDaily Max: ₹15,000\nToday Used: ₹${wd.total}\nRemaining: ₹${remain}\nYou Asked: ₹${amt}\nNaale try madi!`);
+return;
+}
+let user=JSON.parse(localStorage.getItem('zynxo_user')||'{"rs":5}');
+if(amt>user.rs){alert(`Balance kammide! Balance: ₹${user.rs}`);return}
+
+// TAX CALC
+let perTax=amt*0.05;
+let totalTax=perTax+5;
+let finalAmt=amt-totalTax;
+
+if(!confirm(`💰 CONFIRM:\nAmount: ₹${amt}\nTax 5%: ₹${perTax.toFixed(2)} + Fee ₹5 = Total Tax ₹${totalTax.toFixed(2)}\n✅ You Get: ₹${finalAmt.toFixed(2)}\nUPI: ${upi}\nDaily: ${wd.total}/15000\nOK?`)) return;
+
+wd.total+=amt; wd.date=today;
+localStorage.setItem('zynxo_withdraw_daily',JSON.stringify(wd));
+user.rs-=amt;
+localStorage.setItem('zynxo_user',JSON.stringify(user));
+updateBal(user);
+
+alert(`✅ Withdraw Success!\nRequested: ₹${amt}\nTax: ₹${totalTax.toFixed(2)}\nYou Get: ₹${finalAmt.toFixed(2)}\nTo: ${upi}\nDaily Used: ₹${wd.total}/₹15000\n24 hours olage barutte!`);
+document.getElementById('withAmt').value='';
+calcTax();
+}
+function calcTax(){
+let amt=parseInt(document.getElementById('withAmt').value)||0;
+let today=new Date().toDateString();
+let wd=JSON.parse(localStorage.getItem('zynxo_withdraw_daily')||'{"date":"","total":0}');
+if(wd.date!==today) wd.total=0;
+let remain=15000-wd.total;
+let open=new Date().getHours()>=10 && new Date().getHours()<22;
+let status=open?"🟢 OPEN":"🔴 CLOSED";
+let info=document.getElementById('taxInfo');
+if(amt>=101 && amt<=5001){
+let tax=amt*0.05+5;
+let finalAmt=amt-tax;
+info.innerHTML=`Tax: ₹${tax.toFixed(2)} | You Get: ₹${finalAmt.toFixed(2)}<br><small>${status} 10AM-10PM | Daily ${wd.total}/15000 | Remain ${remain}</small>`;
+}else if(amt>0){
+info.innerHTML=`Min ₹101 Max ₹5001 | ${status} 10AM-10PM<br><small>Daily ${wd.total}/15000 | Remain ${remain} | Entered ₹${amt}</small>`;
+}else{
+info.innerHTML=`Min ₹101 Max ₹5001 | ${status} 10AM-10PM<br><small>Daily Limit ₹15000 | Used ₹${wd.total} | Remain ₹${remain}</small>`;
+}
+}
+calcDeposit(); calcTax();
 </script>
 </body>
 </html>
