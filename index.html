@@ -1,18 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZYNXO</title>
+<title>ZYNXO - WinZO Style</title>
 <style>
-body{background:#1A0B4A;color:#fff;font-family:Arial;margin:0;text-align:center;padding-top:50px}
-.logo{color:#FFEB3B;font-size:40px;font-weight:900}
-.btn{background:#FFEB3B;color:#1A0B4A;padding:15px 30px;border-radius:12px;border:none;font-weight:800;margin-top:20px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{background:#0f0a2e;color:white;min-height:100vh}
+.login{padding:20px;display:flex;flex-direction:column;justify-content:center;min-height:100vh}
+.logo{text-align:center;margin-bottom:30px}
+.logo h1{font-size:50px;color:#ffe600;font-weight:900}
+.card{background:#1e1555;border-radius:20px;padding:25px;border:2px solid #3a2a8a}
+.input{width:100%;padding:16px;border-radius:12px;border:1px solid #3a2a8a;background:#0f0a2e;color:white;font-size:16px;margin-bottom:15px}
+.btn{background:#ffe600;color:black;border:none;padding:18px;width:100%;border-radius:15px;font-weight:900;font-size:18px}
+.main{display:none}
+.header{background:#1a124d;padding:15px;display:flex;justify-content:space-between;border-bottom:3px solid #ffe600}
+.balance{background:#ffe600;color:black;padding:10px 18px;border-radius:25px;font-weight:900}
+.hero{background:linear-gradient(135deg,#2a1a6e,#1a124d);margin:15px;border-radius:20px;padding:30px;text-align:center;border:2px solid #ffe600}
+.hero h1{font-size:48px;color:#ffe600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:15px}
+.card2{background:#1e1555;border-radius:16px;padding:20px;text-align:center;border:1px solid #3a2a8a}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#1a124d;display:flex;justify-content:space-around;padding:14px;border-top:2px solid #ffe600}
 </style>
 </head>
 <body>
-<div class="logo">⚡ ZYNXO</div>
-<h2>31 COINS BALANCE</h2>
-<button class="btn" onclick="alert('Daily Bonus Claimed!')">CLAIM BONUS</button>
-<p style="margin-top:30px">App Successfully Created!</p>
+<div class="login" id="login">
+<div class="logo"><h1>⚡ ZYNXO</h1><p>PLAY & EARN</p></div>
+<div class="card"><h2>Welcome! 👋</h2><p style="opacity:0.6;font-size:13px;margin:10px 0 20px">Signup & Get 31 Coins Direct</p>
+<input id="name" class="input" placeholder="Enter Your Name"><input id="mobile" class="input" placeholder="Enter Mobile Number">
+<button class="btn" onclick="go()">SIGNUP & GET 31 COINS →</button></div>
+</div>
+<div class="main" id="main">
+<div class="header"><div style="font-weight:900;color:#ffe600">⚡ ZYNXO</div><div class="balance">🪙 <span id="coins">31</span> COINS</div></div>
+<div class="hero"><div style="font-size:60px">✅</div><h2 id="w">WELCOME!</h2><h1>31 COINS ADDED</h1><p>Direct to Wallet</p></div>
+<div class="grid">
+<div class="card2" onclick="spin()"><div style="font-size:38px">🎡</div><h3>Spin & Win</h3></div>
+<div class="card2"><div style="font-size:38px">🎮</div><h3>Play Games</h3></div>
+<div class="card2"><div style="font-size:38px">✅</div><h3>Tasks</h3></div>
+<div class="card2"><div style="font-size:38px">👥</div><h3>Refer</h3></div>
+</div>
+<div class="nav"><div>🏠 Home</div><div>🎮 Games</div><div>🎡 Spin</div><div>💰 Wallet</div></div>
+</div>
+<script>
+let coins=31;
+function go(){let n=document.getElementById('name').value,m=document.getElementById('mobile').value;if(n.length<2){alert('Enter Name');return}if(m.length<10){alert('Enter Mobile');return}document.getElementById('login').style.display='none';document.getElementById('main').style.display='block';document.getElementById('w').innerText='WELCOME '+n.toUpperCase()+'!'}
+function spin(){let w=Math.floor(Math.random()*100)+20;coins+=w;document.getElementById('coins').innerText=coins;alert('Won '+w+' Coins! Total: '+coins)}
+</script>
 </body>
 </html>
